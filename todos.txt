@@ -1,0 +1,6 @@
+- make bill and tip amt number
+  - remove arrows w css
+  - configure it
+
+- make decisions about how you want tip to impact button selection
+  - when do you actually want to re-render (blur)

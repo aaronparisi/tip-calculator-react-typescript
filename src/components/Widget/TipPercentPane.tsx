@@ -1,69 +1,74 @@
-import React, { useEffect, useState } from 'react'
+import React, { useRef } from "react";
 
 export interface TipPercentPaneProps {
-  tipPercentage: number,
-  updateTipPercentage: (newTip: number) => void,
+  tipPercentage: number;
+  updateTipPercentage: (newTip: number) => void;
 }
 
 interface PercentageSelectorButtonProps {
-  percentage: string,  // change this?
-  setSelectedTipPercent: (selectedTipPercent: string) => void,
-  selectedPercentage: string
+  buttonPercentage: number;
+  selectedTipPercentage: number;
+  updateTipPercentage: (newTip: number) => void;
 }
 
-const PercentageSelectorButton: React.FC<PercentageSelectorButtonProps> = ({ percentage, setSelectedTipPercent, selectedPercentage }) => {
+const PercentageSelectorButton: React.FC<PercentageSelectorButtonProps> = ({
+  buttonPercentage,
+  selectedTipPercentage,
+  updateTipPercentage,
+}) => {
   // todo check whether or not this button is selected to dynamically set class for styling
   // todo handle custom values if they happen to coincide with a button percentage option
-  console.log(`percentage of this button: ${percentage}`)
-  console.log(`percentage selected: ${selectedPercentage}`)
+  console.log(`percentage of this button: ${buttonPercentage}`);
+  console.log(`percentage selected: ${selectedTipPercentage}`);
   return (
     <button
-      className={(selectedPercentage === percentage) ? "pct-selector-selected" : "pct-selector" }
-      id={`pct-selector-${percentage}`}
-      onClick={() => setSelectedTipPercent(percentage)}
+      className={
+        selectedTipPercentage === buttonPercentage
+          ? "pct-selector-selected"
+          : "pct-selector"
+      }
+      id={`pct-selector-${buttonPercentage}`}
+      onClick={() => updateTipPercentage(buttonPercentage)}
     >
-      {`${percentage}%`}
+      {`${buttonPercentage}%`}
     </button>
-  )
-}
+  );
+};
 
-const TipPercentPane: React.FC<TipPercentPaneProps> = ({ tipPercentage, updateTipPercentage }) => {
-  const [selectedTipPercent, setSelectedTipPercent] = useState<string>(tipPercentage.toString())
-  const [customTipPercent, setCustomTipPercent] = useState<string>("")
+const TipPercentPane: React.FC<TipPercentPaneProps> = ({
+  tipPercentage,
+  updateTipPercentage,
+}) => {
+  const percentageSelectors: number[] = [5, 10, 15, 20, 25, 50];
 
-  const percentageSelectors: string[] = ["5", "10", "15", "20", "25", "50"]
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    // update widget any time local state changes
-    updateTipPercentage(parseFloat(selectedTipPercent))
-  }, [selectedTipPercent, updateTipPercentage])  // updateTipPercentage should never really change
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  useEffect(() => {
-    // update selectedTipPercent whenever the custom tip changes
-    if (customTipPercent !== "") setSelectedTipPercent(customTipPercent);
-  }, [customTipPercent])
+    // logic to make it not render if such and such
+    updateTipPercentage(parseFloat(inputRef?.current?.value ?? "0"));
+  };
 
   return (
     <div className="tip-pane">
       <h2>Select Tip %</h2>
-      {percentageSelectors.map(pct => {
+      {percentageSelectors.map((pct) => {
         return (
           <PercentageSelectorButton
             key={pct}
-            percentage={pct} 
-            setSelectedTipPercent={setSelectedTipPercent} 
-            selectedPercentage={selectedTipPercent}
-          />)  // is it ok to pass this function to a child prop?
+            buttonPercentage={pct}
+            selectedTipPercentage={tipPercentage}
+            updateTipPercentage={updateTipPercentage}
+          />
+        ); // is it ok to pass this function to a child prop?
       })}
 
-        <input
-          type="text"
-          // onSelect={() => setSelectedTipPercent("")}  // what if user clicks here then clicks away??
-          value={customTipPercent}
-          onChange={(e: React.FormEvent<HTMLInputElement>) => setCustomTipPercent(e.currentTarget.value)}
-        />
+      <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
+        <input type="number" ref={inputRef} step={0.01} min={0} max={100} />
+      </form>
     </div>
-  )
-}
+  );
+};
 
-export default TipPercentPane
+export default TipPercentPane;
