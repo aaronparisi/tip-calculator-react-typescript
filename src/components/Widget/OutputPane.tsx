@@ -4,6 +4,7 @@ interface OutputPaneProps {
   bill: number,
   tipPercentage: number,
   numPeople: number
+  resetAll: () => void
 }
 
 interface OutputPaneItemProps {
@@ -20,13 +21,13 @@ const OutputPaneItem: React.FC<OutputPaneItemProps> = ({ title, outputNum }) => 
       </div>
 
       <div className="output-dollars">
-        {outputNum}
+        {isNaN(outputNum) ? "--" : outputNum}
       </div>
     </div>
   )
 }
 
-const OutputPane: React.FC<OutputPaneProps> = ({ bill, tipPercentage, numPeople }) => {
+const OutputPane: React.FC<OutputPaneProps> = ({ bill, tipPercentage, numPeople, resetAll }) => {
   const tipPerPerson = (bill * (tipPercentage / 100) / numPeople);
   const totalPerPerson = (bill / numPeople) + tipPerPerson;
 
@@ -38,8 +39,10 @@ const OutputPane: React.FC<OutputPaneProps> = ({ bill, tipPercentage, numPeople 
       <OutputPaneItem title="Tip Amount" outputNum={tipPerPerson} />
       <OutputPaneItem title="Total" outputNum={totalPerPerson} />
       <button
-        onClick={() => console.log('should reset now')}
-      >Reset!</button>
+        onClick={() => resetAll()}
+      >
+        Reset!
+      </button>
     </div>
   )
 }

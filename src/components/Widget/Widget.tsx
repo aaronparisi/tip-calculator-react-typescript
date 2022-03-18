@@ -7,9 +7,9 @@ interface WidgetPaneProps {
 }
 
 const WidgetPane: React.FC<WidgetPaneProps> = () => {
-  const [bill, setBill] = useState<number>(0);
-  const [tipPercentage, setTipPercentage] = useState<number>(0)
-  const [numPeople, setNumPeople] = useState<number>(0)
+  const [bill, setBill] = useState<number>(200);
+  const [tipPercentage, setTipPercentage] = useState<number>(25)
+  const [numPeople, setNumPeople] = useState<number>(2)
 
   const updateBill = (newBill: number): void => {
     setBill(newBill)
@@ -21,6 +21,12 @@ const WidgetPane: React.FC<WidgetPaneProps> = () => {
 
   const updateNumPeople = (newNumPeople: number): void => {
     setNumPeople(newNumPeople)
+  }
+
+  const resetAll = () => {
+    setBill(0)
+    setTipPercentage(0)
+    setNumPeople(0)
   }
 
   return (
@@ -38,6 +44,7 @@ const WidgetPane: React.FC<WidgetPaneProps> = () => {
         bill={bill} 
         tipPercentage={tipPercentage} 
         numPeople={numPeople}
+        resetAll={resetAll}
       />
     </div>
   )

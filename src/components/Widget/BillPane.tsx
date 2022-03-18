@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-interface BillPaneProps {
+export interface BillPaneProps {
   bill: number,
   updateBill: (newBill: number) => void,
 }

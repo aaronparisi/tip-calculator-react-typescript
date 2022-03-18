@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-interface TipPercentPaneProps {
+export interface TipPercentPaneProps {
   tipPercentage: number,
   updateTipPercentage: (newTip: number) => void,
 }
@@ -14,6 +14,8 @@ interface PercentageSelectorButtonProps {
 const PercentageSelectorButton: React.FC<PercentageSelectorButtonProps> = ({ percentage, setSelectedTipPercent, selectedPercentage }) => {
   // todo check whether or not this button is selected to dynamically set class for styling
   // todo handle custom values if they happen to coincide with a button percentage option
+  console.log(`percentage of this button: ${percentage}`)
+  console.log(`percentage selected: ${selectedPercentage}`)
   return (
     <button
       className={(selectedPercentage === percentage) ? "pct-selector-selected" : "pct-selector" }
@@ -38,7 +40,7 @@ const TipPercentPane: React.FC<TipPercentPaneProps> = ({ tipPercentage, updateTi
 
   useEffect(() => {
     // update selectedTipPercent whenever the custom tip changes
-    setSelectedTipPercent(customTipPercent)
+    if (customTipPercent !== "") setSelectedTipPercent(customTipPercent);
   }, [customTipPercent])
 
   return (
@@ -54,14 +56,12 @@ const TipPercentPane: React.FC<TipPercentPaneProps> = ({ tipPercentage, updateTi
           />)  // is it ok to pass this function to a child prop?
       })}
 
-      <form>
         <input
           type="text"
           // onSelect={() => setSelectedTipPercent("")}  // what if user clicks here then clicks away??
           value={customTipPercent}
           onChange={(e: React.FormEvent<HTMLInputElement>) => setCustomTipPercent(e.currentTarget.value)}
         />
-      </form>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-interface NumPeoplePaneProps {
+export interface NumPeoplePaneProps {
   numPeople: number,
   updateNumPeople: (newNumPeople: number) => void
 }

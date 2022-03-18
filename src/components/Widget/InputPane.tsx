@@ -1,16 +1,18 @@
 import React from 'react'
-import BillPane from './BillPane'
-import NumPeoplePane from './NumPeoplePane'
-import TipPercentPane from './TipPercentPane'
+import BillPane, { BillPaneProps } from './BillPane'
+import NumPeoplePane, { NumPeoplePaneProps } from './NumPeoplePane'
+import TipPercentPane, { TipPercentPaneProps } from './TipPercentPane'
 
-interface InputPaneProps {
-  bill: number,
-  updateBill: (newBill: number) => void,
-  tipPercentage: number,
-  updateTipPercentage: (newTip: number) => void,
-  numPeople: number,
-  updateNumPeople: (newNumPeople: number) => void
-}  // todo make this a union?
+type InputPaneProps = BillPaneProps & NumPeoplePaneProps & TipPercentPaneProps
+
+// interface InputPaneProps {
+//   bill: number,
+//   updateBill: (newBill: number) => void,
+//   tipPercentage: number,
+//   updateTipPercentage: (newTip: number) => void,
+//   numPeople: number,
+//   updateNumPeople: (newNumPeople: number) => void
+// }  // todo make this a intersection?
 
 const InputPane: React.FC<InputPaneProps> = ({ 
   bill, 
